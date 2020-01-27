@@ -14,9 +14,8 @@ defmodule ReactionWeb.Router do
   end
 
   scope "/", ReactionWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
+    pipe_through :api
+    post "/reaction", ReplyController, :create
   end
 
   # Other scopes may use custom stacks.

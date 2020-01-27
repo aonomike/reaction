@@ -1,9 +1,22 @@
 defmodule ReactionWeb.ReplyController do
   use ReactionWeb, :controller
 
+  alias Reaction.Cache
 
-  action_fallback ReactionWeb.FallbackController
 
+  # action_fallback ReactionWeb.FallbackController
+
+  def create(conn,  %{"reply" => reply_params}) do
+    case reply_params do
+      %{"action"=> "add"} ->  
+        {:ok, _} = Cache.start_link()
+        Cache.add(reply_params["content_id"], reply_params["user_id"])
+        render(conn, "show.json", reply: %{ content: reply_params["content_id"]})
+
+      %{"action"=> "remove"}
+        reply_params
+    end
+  end
   # def index(conn, _params) do
   #   reactions = Posts.list_reactions()
   #   render(conn, "index.json", reactions: reactions)
