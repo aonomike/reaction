@@ -15,7 +15,8 @@ defmodule ReactionWeb.Router do
 
   scope "/", ReactionWeb do
     pipe_through :api
-    post "/reaction", ReplyController, :create
+    resources "/reaction", ReplyController, only: [:create]
+    get "/content_count/:content_id", ReplyController, :content_count
   end
 
   # Other scopes may use custom stacks.

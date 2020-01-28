@@ -11,12 +11,21 @@ defmodule ReactionWeb.ReplyController do
       %{"action"=> "add"} ->  
         {:ok, _} = Cache.start_link()
         Cache.add(reply_params["content_id"], reply_params["user_id"])
-        render(conn, "show.json", reply: %{ content: reply_params["content_id"]})
+        render(conn, "show.json", reply: %{ content_id: reply_params["content_id"]})
 
       %{"action"=> "remove"}
-        reply_params
+      {:ok, _} = Cache.start_link()
+      Cache.remove(reply_params["content_id"], reply_params["user_id"])
+      render(conn, "show.json", reply: %{ content_id: reply_params["content_id"]})
     end
   end
+
+
+  # def content_count(conn, params) do
+  #   {:ok, _} = Cache.start_link()
+  #   # count = Cache.counter(reply_params["content_id"], reply_params["user_id"])
+  #   render(conn, "count.json", reply: %{ content_id: reply_params["content_id"], count: count})
+  # end
   # def index(conn, _params) do
   #   reactions = Posts.list_reactions()
   #   render(conn, "index.json", reactions: reactions)
